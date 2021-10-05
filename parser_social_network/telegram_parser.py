@@ -23,7 +23,7 @@ client = TelegramClient(username, api_id, api_hash)
 client.start()
 
 async def dump_all_messages(channel):
-    """ """
+    """Записывает json-файл с информацией о всех сообщениях канала"""
     offset_msg = 0          # номер записи, с которой начинается считывание
     limit_msg = 100         # максимальное число записей, передаваемых за один раз
 
@@ -57,7 +57,12 @@ async def dump_all_messages(channel):
             break
         messages = history.messages
         for msg in messages:
-            all_messages.append(msg.to_dict())
+            
+            if len(msg.message) > 0:
+                msg = re.sub("^\s+|\n|\r|\s+$", ' ', str(msg.message))
+                all_messages.append({
+                    'message' : msg,
+                    })
         offset_msg = messages[len(messages) - 1].id
         total_msg = len(all_messages)
 
@@ -67,8 +72,13 @@ async def dump_all_messages(channel):
         json.dump(all_messages, file, ensure_ascii=False, indent = 4, cls=DateTimeEncoder)
 
 async def main():
-    channel = await client.get_entity('https://t.me/procent_ru')
-    await dump_all_messages(channel)
+    with open('Source/links_telegram.txt', 'r') as file:
+        links = str(file.read()).split('\n')
+        file.close()
+    for link in links:
+        channel = await client.get_entity(link)
+        await dump_all_messages(channel)
+        break
 
 with client:
     client.loop.run_until_complete(main())
