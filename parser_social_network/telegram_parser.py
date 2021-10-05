@@ -57,28 +57,29 @@ async def dump_all_messages(channel):
             break
         messages = history.messages
         for msg in messages:
-            
+
             if len(msg.message) > 0:
-                msg = re.sub("^\s+|\n|\r|\s+$", ' ', str(msg.message))
+                message = re.sub("^\s+|\n|\r|\s+$", ' ', str(msg.message))
                 all_messages.append({
-                    'message' : msg,
+                    'message' : message,
+                    'date' : msg.date, 
                     })
         offset_msg = messages[len(messages) - 1].id
         total_msg = len(all_messages)
 
         if total_count_limit != 0 and total_msg >= total_count_limit:
             break
-    with open(f'{title}.json', 'w', encoding='utf8') as file:
+    with open(f'Message_JSON\{title}.json', 'w', encoding='utf8') as file:
         json.dump(all_messages, file, ensure_ascii=False, indent = 4, cls=DateTimeEncoder)
 
 async def main():
-    with open('Source/links_telegram.txt', 'r') as file:
+    with open('Source\links_telegram.txt', 'r') as file:
         links = str(file.read()).split('\n')
         file.close()
     for link in links:
         channel = await client.get_entity(link)
         await dump_all_messages(channel)
-        break
+
 
 with client:
     client.loop.run_until_complete(main())

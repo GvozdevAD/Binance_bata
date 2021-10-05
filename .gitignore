@@ -1,3 +1,4 @@
 *.ini
 *.session
 __pycache__/
+Message_JSON/
