@@ -10,6 +10,6 @@ config = configparser.ConfigParser()
 config_path = str(Path(__file__).parents[1]) + '\config.ini'
 config.read(config_path)
 
-APP_KEY = ['Twitter']['app_key']
-APP_SECRET = ['Twitter']['app_secret']
+APP_KEY = config['Twitter']['app_key']
+APP_SECRET = config['Twitter']['app_secret']
 
