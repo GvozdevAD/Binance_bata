@@ -26,15 +26,21 @@ def get_headers_reddit():
                         auth=auth, data=data, headers=headers)
 
     TOKEN = res.json()['access_token']
+    
     headers = {**headers,**{'Authorization': f"bearer {TOKEN}"}}
     return headers
 
 def main():
     headers = get_headers_reddit()
-    res = requests.get('https://oauth.reddit.com/r/CryptoCurrency/',
-                   headers=headers)
-    with open('test.json', 'w', encoding='utf8') as file:
-        json.dump(res.json(), file, ensure_ascii=False, indent=4)
+    with open('Source\links_reddit.txt', 'r') as file:
+        links = str(file.read()).split('\n')
+        file.close()
+    for link in links:
+        res = requests.get(link, headers=headers)
+        title = res.json()['data']['children'][0]['data']['subreddit']
+        with open(f'Message_JSON\{title}.json', 'w', encoding='utf8') as file:
+            json.dump(res.json(), file, ensure_ascii=False, indent=4)
+        
 
 if __name__ == '__main__':
     main()
