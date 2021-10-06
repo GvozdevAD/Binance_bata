@@ -10,7 +10,6 @@ from telethon.sync import TelegramClient
 from telethon.tl.functions.messages import GetHistoryRequest
 
 
-
 config = configparser.ConfigParser()
 config_path = str(Path(__file__).parents[1]) + '\config.ini'
 config.read(config_path)
@@ -57,13 +56,18 @@ async def dump_all_messages(channel):
             break
         messages = history.messages
         for msg in messages:
-
-            if len(msg.message) > 0:
-                message = re.sub("^\s+|\n|\r|\s+$", ' ', str(msg.message))
-                all_messages.append({
-                    'message' : message,
-                    'date' : msg.date, 
-                    })
+            try:
+                if len(msg.message) > 0:
+                    message = re.sub("^\s+|\n|\r|\s+$", ' ', str(msg.message))
+                    all_messages.append({
+                        'id' : msg.id,
+                        'message' : message,
+                        'date' : msg.date, 
+                        })
+            except Exception as e:
+                print(e)
+                print(msg)
+                continue
         offset_msg = messages[len(messages) - 1].id
         total_msg = len(all_messages)
 

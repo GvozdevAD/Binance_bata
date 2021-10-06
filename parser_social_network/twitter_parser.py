@@ -1,4 +1,5 @@
 # Жду ответ на получение АПИ 
+# TWITTER гадский гад не дает апишечку!!!!!
 # Использовать twython но это не точно
 import json
 import configparser
