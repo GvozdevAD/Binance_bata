@@ -15,11 +15,11 @@ config = configparser.ConfigParser()
 config_path = str(Path(__file__).parents[1]) + '\config.ini'
 config.read(config_path)
 
-api_id = config["Telegram"]["api_id"]
-api_hash = config["Telegram"]["api_hash"]
-username = config["Telegram"]["username"]
+API_ID = config["Telegram"]["api_id"]
+API_HASH = config["Telegram"]["api_hash"]
+USERNAME = config["Telegram"]["username"]
 
-client = TelegramClient(username, api_id, api_hash)
+client = TelegramClient(USERNAME, API_ID, API_HASH)
 client.start()
 
 async def dump_all_messages(channel):

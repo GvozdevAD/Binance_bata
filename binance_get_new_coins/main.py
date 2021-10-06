@@ -52,9 +52,9 @@ def main():
     config_path = str(path) + '\config.ini'
     config.read(config_path)
    
-    api_key = config['Binance']['api_key']
-    secret_key = config['Binance']['secret_key']
-    client = Client(api_key, secret_key)                # Создаем клиента и передаем API ключи
+    API_KEY = config['Binance']['api_key']
+    SECRET_KEY = config['Binance']['secret_key']
+    client = Client(API_KEY, SECRET_KEY)                # Создаем клиента и передаем API ключи
 
     all_coin = client.get_all_tickers()                 # Получаем все койны что есть на бирже
     biance_coins = [ele['symbol'] for ele in all_coin]
