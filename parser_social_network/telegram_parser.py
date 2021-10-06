@@ -64,9 +64,7 @@ async def dump_all_messages(channel):
                         'message' : message,
                         'date' : msg.date, 
                         })
-            except Exception as e:
-                print(e)
-                print(msg)
+            except :
                 continue
         offset_msg = messages[len(messages) - 1].id
         total_msg = len(all_messages)
