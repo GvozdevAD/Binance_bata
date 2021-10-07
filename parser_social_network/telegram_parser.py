@@ -97,7 +97,7 @@ async def dump_all_messages(channel):
 
         with open(f'Message_JSON\{title}.json', 'w', encoding='utf8') as file:
             json.dump(all_messages, file, ensure_ascii=False, indent = 4, cls=DateTimeEncoder)
-            file.close9
+            file.close()
 
 async def main():
     with open('Source\links_telegram.txt', 'r') as file:
