@@ -40,6 +40,7 @@ def main():
         title = res.json()['data']['children'][0]['data']['subreddit']
         with open(f'Message_JSON\{title}.json', 'w', encoding='utf8') as file:
             json.dump(res.json(), file, ensure_ascii=False, indent=4)
+        break
         
 
 if __name__ == '__main__':

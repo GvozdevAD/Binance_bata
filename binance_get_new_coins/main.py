@@ -15,19 +15,24 @@ def get_new_coin(list_coins):
     """Принимаем список полученных новых койнов
     и сравниваем новый список и старый"""
 
-    path_txt = os.path.abspath('coins.txt')
+    path_json = os.path.abspath('coins.json')
 
-    if os.path.exists(path_txt):
-        with open(path_txt, 'r') as file:                   # Открываем файл с сохраненными койнами
-            old_coins = str(file.read()).split('\n')        # и добавляем в переменную
+    if os.path.exists(path_json):
+        
+        with open(path_json, 'r', encoding='utf8') as file: # Открываем файл с сохраненными койнами
+            old_coins = json.load(file)                     # и добавляем в переменную
             file.close()
 
-        new_coins = list(set(old_coins) ^ set(list_coins))  # Сравниваем два списка и ищем новые койны
+        new_coins = list(set(old_coins['coins']) ^ set(list_coins))  # Сравниваем два списка и ищем новые койны
 
         if len(new_coins) > 0:                              # Если койны есть то записываем их в файлик
             print('[INFO] Found new coin')
-            with open(path_txt, 'a') as file:
-                file.write('\n' + '\n'.join(new_coins))
+            with open(path_json, 'r',encoding='utf8') as file:
+                all_coins = json.load(file)
+                all_coins['coins']+=new_coins
+                with open(path_json, 'w', encoding='utf8') as f:
+                    json.dump(all_coins, f, ensure_ascii=False,indent=4)
+                    f.close()
                 file.close()
             
             return new_coins
@@ -35,9 +40,8 @@ def get_new_coin(list_coins):
             print('[INFO] Not Found')
 
     else:
-    
-        with open(path_txt, 'w') as file:
-            file.write('\n'.join(list_coins))
+        with open(path_json, 'w', encoding='utf8') as file:
+            json.dump({'coins':list_coins}, file, ensure_ascii=False, indent=4)
             file.close()
 
 def leave_an_order(client, new_coins):
