@@ -100,10 +100,11 @@ async def dump_all_messages(channel):
             file.close()
 
 async def main():
-    with open('Source\links_telegram.txt', 'r') as file:
-        links = str(file.read()).split('\n')
-        file.close()
 
+    with open('Source\links_social_network.json', 'r', encoding='utf8') as file:
+        links = json.load(file)['Telegram']
+        file.close()
+    
     for link in links:
         channel = await client.get_entity(link)
         await dump_all_messages(channel)

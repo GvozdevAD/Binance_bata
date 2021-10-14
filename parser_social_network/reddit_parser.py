@@ -32,15 +32,16 @@ def get_headers_reddit():
 
 def main():
     headers = get_headers_reddit()
-    with open('Source\links_reddit.txt', 'r') as file:
-        links = str(file.read()).split('\n')
+
+    with open('Source\links_social_network.json', 'r', encoding='utf8') as file:
+        links = json.load(file)['Reddit']
         file.close()
+        
     for link in links:
         res = requests.get(link, headers=headers)
         title = res.json()['data']['children'][0]['data']['subreddit']
         with open(f'Message_JSON\{title}.json', 'w', encoding='utf8') as file:
             json.dump(res.json(), file, ensure_ascii=False, indent=4)
-        break
         
 
 if __name__ == '__main__':
